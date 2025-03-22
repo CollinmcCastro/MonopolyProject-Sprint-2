@@ -1,4 +1,5 @@
-package Model;
+package Model.Model;
+
 
 public abstract class Space {
     protected String name;

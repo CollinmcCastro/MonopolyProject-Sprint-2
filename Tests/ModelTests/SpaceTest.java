@@ -3,12 +3,12 @@
  */
 package ModelTests;
 
-import Model.GameBoard;
-import Model.Player;
-import Model.Space;
+import Model.Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -26,7 +26,8 @@ public class SpaceTest {
     @BeforeEach
     public void setUp() {
         GameBoard gameBoard = new GameBoard(new ArrayList<>());
-        player = new Player("Test Player", "Token", gameBoard);
+        List<Player> players = new ArrayList<>();
+        player = new Player("Test Player", "Token", gameBoard, players);
     }
 
     /**

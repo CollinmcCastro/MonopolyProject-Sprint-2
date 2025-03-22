@@ -1,16 +1,18 @@
-package View;
+package Model.View;
 
-import Model.*;
+import Model.Model.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 public class MonopolyView {
-
-    private final GameBoard gameBoard;
-
+    private final GameBoard gameBoard; // change to gameState, which will call everything
     public MonopolyView(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
+    }
+
+    public static String playerSelectToken() {
+        return this.player.assignTokensToPlayers();
     }
 
     public void displaySpaces() {
@@ -85,14 +87,14 @@ public class MonopolyView {
                 System.out.println("  Owner: " + (utility.isOwned() ? utility.getOwner().getName() : "None"));
             }
             case Space.TaxSpace tax -> System.out.println("  Tax Amount: $" + tax.getTaxAmount());
-            case Space.ChanceSpace _ -> {
+            case Space.ChanceSpace space -> {
                 ChanceCard card = gameBoard.getChanceDeck().pop();
                 System.out.println(player.getName() + " drew a Chance card: " + card.getDescription());
                 card.apply(player);
                 gameBoard.getChanceDeck().push(card); // Optionally, put the card back at the bottom of the deck
 
             }
-            case Space.CommunityChestSpace _ -> {
+            case Space.CommunityChestSpace space -> {
                 CommunityChestCard card = gameBoard.getCommunityDeck().pop();
                 System.out.println(player.getName() + " drew a Community Chest card: " + card.getDescription());
                 card.apply(player);
@@ -112,8 +114,13 @@ public class MonopolyView {
 
     public static void main(String[] args) {
         GameBoard board = new GameBoard(new ArrayList<>());
-        Player topHat = new Player("Player 1", "Top Hat", board);
-        Player battleship = new Player("Player 2", "Battleship", board);
+        String token = playerSelectToken();
+        System.out.println(token);
+        Player player1 = new Player("Player 1", token, board, new ArrayList<>());
+        token = playerSelectToken();
+        Player player2 = new Player("Player 2", token, board, new ArrayList<>());
+       // Player topHat = new Player("Player 1", "Top Hat", board);
+        // Player battleship = new Player("Player 2", "Battleship", board);
 
         MonopolyView view = new MonopolyView(board);
 
@@ -131,15 +138,15 @@ public class MonopolyView {
         // Simulation loop
         while (true) {
             System.out.println("Player 1's turn");
-            view.displayDiceRoll(topHat);
-            if (topHat.getPosition() == 0) {
+            view.displayDiceRoll(player1);
+            if (player1.getPosition() == 0) {
                 System.out.println("Player 1 reached Go!");
                 break;
             }
 
             System.out.println("Player 2's turn");
-            view.displayDiceRoll(battleship);
-            if (battleship.getPosition() == 0) {
+            view.displayDiceRoll(player2);
+            if (player2.getPosition() == 0) {
                 System.out.println("Player 2 reached Go!");
                 break;
             }

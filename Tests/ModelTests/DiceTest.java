@@ -3,12 +3,12 @@
  */
 package ModelTests;
 
-import Model.Dice;
-import Model.GameBoard;
-import Model.Player;
+import Model.Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DiceTest {
     private Dice dice;
     private Player player;
+    private List<Player> players;
 
     /**
      * Sets up the test environment before each test.
@@ -26,7 +27,7 @@ public class DiceTest {
     public void setUp() {
         dice = new Dice();
         GameBoard gameBoard = new GameBoard(new ArrayList<>());
-        player = new Player("TestPlayer", "Car", gameBoard);
+        player = new Player("TestPlayer", "Car", gameBoard, players);
     }
 
     /**

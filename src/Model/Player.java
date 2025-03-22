@@ -1,4 +1,4 @@
-package Model;
+package Model.Model;
 
 import java.util.*;
 
@@ -14,9 +14,12 @@ public class Player {
     private Dice dice;
     private GameBoard gameBoard;
 
-    public Player(String name, String token, GameBoard gameBoard) {
+    private final List<Player> players; // Players in the game
+
+    public Player(String name, String token, GameBoard gameBoard, List<Player> players) {
         this.name = name;
         this.token = token;
+        this.players = players;
         this.money = 1500;
         this.position = 0;
         this.properties = new ArrayList<>();
@@ -38,6 +41,36 @@ public class Player {
         this.inJail = true;
         this.position = 10;
         System.out.println(token + " is sent to Jail.");
+    }
+
+    public void assignTokensToPlayers() {
+        List<String> availableTokens = new ArrayList<>(Arrays.asList(
+                "Top Hat", "Battleship", "Thimble", "Cannon", "Cat", "Iron",
+                "Scottie dog", "The Shoe", "Boot", "Ducky", "Horse & Rider",
+                "Penguin", "Race car", "Train", "Wheelbarrow"
+        ));
+        Scanner scanner = new Scanner(System.in);
+        int choice = -1;
+        String chosenToken = availableTokens.remove(choice - 1);
+
+        for (Player player : players) {
+            System.out.println(this.name + ", choose your token from the following list:");
+            for (int j = 0; j < availableTokens.size(); j++) {
+                System.out.println((j + 1) + ": " + availableTokens.get(j));
+            }
+
+            while (choice < 1 || choice > availableTokens.size()) {
+                System.out.print("Enter the number of your choice: ");
+                try {
+                    choice = Integer.parseInt(scanner.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a number.");
+                }
+            }
+
+            player.token = chosenToken;
+            System.out.println(this.name + " has chosen the " + chosenToken + " token.");
+        }
     }
 
     public void rollDice() {

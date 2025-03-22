@@ -1,7 +1,7 @@
 package ViewTests;
 
-import Model.*;
-import View.MonopolyView;
+import Model.Model.*;
+import Model.View.MonopolyView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class MonopolyViewTest {
         List<Player> players = new ArrayList<>();
         gameBoard = new GameBoard(players);
         view = new MonopolyView(gameBoard);
-        player = new Player("TestPlayer", "Car", gameBoard);
+        player = new Player("TestPlayer", "Car", gameBoard, players);
         players.add(player);
     }
 

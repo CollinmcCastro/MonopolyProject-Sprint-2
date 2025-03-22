@@ -1,6 +1,6 @@
 package ModelTests;
 
-import Model.*;
+import Model.Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
@@ -15,6 +15,7 @@ public class GameBoardTest {
 
     private GameBoard gameBoard;
     private List<Player> players;
+    private Player player;
 
     /**
      * Sets up the test environment before each test.
@@ -24,8 +25,8 @@ public class GameBoardTest {
     public void setUp() {
         players = new ArrayList<>();
         gameBoard = new GameBoard(players);
-        players.add(new Player("Player 1", "Car", gameBoard));
-        players.add(new Player("Player 2", "Dog", gameBoard));
+        players.add(new Player("Player 1", "Car", gameBoard, players));
+        players.add(new Player("Player 2", "Dog", gameBoard, players));
     }
 
     /**
@@ -118,7 +119,7 @@ public class GameBoardTest {
     public void testAssignTokensToPlayers_ValidInput() {
         String input = "1\n2\n"; // Player 1 chooses "Top Hat", Player 2 chooses "Thimble"
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        gameBoard.assignTokensToPlayers();
+        player.assignTokensToPlayers();
         assertEquals("Top Hat", players.get(0).getToken());
         assertEquals("Thimble", players.get(1).getToken());
     }
@@ -130,7 +131,7 @@ public class GameBoardTest {
     public void testAssignTokensToPlayers_InvalidInputThenValid() {
         String input = "invalid\n1\n1\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        gameBoard.assignTokensToPlayers();
+        player.assignTokensToPlayers();
         assertEquals("Top Hat", players.get(0).getToken());
         assertEquals("Battleship", players.get(1).getToken());
     }
@@ -142,7 +143,7 @@ public class GameBoardTest {
     public void testAssignTokensToPlayers_DuplicateInput() {
         String input = "1\n1\n2\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        gameBoard.assignTokensToPlayers();
+        player.assignTokensToPlayers();
         assertEquals("Top Hat", players.get(0).getToken());
         assertNotEquals("Top Hat", players.get(1).getToken());
     }

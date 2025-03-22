@@ -3,12 +3,12 @@
  */
 package ModelTests;
 
-import Model.GameBoard;
-import Model.Property;
-import Model.Player;
+import Model.Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -19,6 +19,8 @@ public class PropertyTest {
     private Property property;
     private Player player;
     private GameBoard gameBoard;
+    private List<Player> players;
+
 
     /**
      * Sets up the test environment before each test.
@@ -27,7 +29,7 @@ public class PropertyTest {
     @BeforeEach
     public void setUp() {
         gameBoard = new GameBoard(new ArrayList<>());
-        player = new Player("Test Player", "Token", gameBoard);
+        player = new Player("Test Player", "Token", gameBoard, players);
         property = new Property("Boardwalk", 400, "Blue");
     }
 
@@ -60,7 +62,7 @@ public class PropertyTest {
     @Test
     public void testPayRent() {
         property.buy(player);
-        Player otherPlayer = new Player("Other Player", "Token", gameBoard);
+        Player otherPlayer = new Player("Other Player", "Token", gameBoard, players);
         int initialMoneyOtherPlayer = otherPlayer.getMoney();
         int initialMoneyPlayer = player.getMoney();
         int rentAmount = property.calculateRent();

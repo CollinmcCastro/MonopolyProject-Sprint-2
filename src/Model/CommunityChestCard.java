@@ -1,7 +1,7 @@
 /**
  * Class Created by Kristian Wright
  */
-package Model;
+package Model.Model;
 
 import java.util.function.Consumer;
 

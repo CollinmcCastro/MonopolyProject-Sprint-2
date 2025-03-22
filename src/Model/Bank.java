@@ -1,7 +1,7 @@
 /**
  * Class Created by Collin Castro supported by Kristian Wright
  */
-package Model;
+package Model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class Bank {
 
     private static final int INITIAL_HOUSES = 32;
-    private static final int INITIAL_HOTELS = 12;
+    private static final int INITIAL_HOTELS = 32;
 
     private int housesRemaining;
     private int hotelsRemaining;

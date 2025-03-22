@@ -1,7 +1,8 @@
 /**
  * Class Created by Kristian Wright
  */
-package Model;
+package Model.Model;
+
 
 /**
  * Represents a property in the Monopoly game.
