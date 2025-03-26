@@ -1,4 +1,4 @@
-package Model.Model;
+package Model;
 
 import java.util.Random;
 

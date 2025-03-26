@@ -1,7 +1,7 @@
 /**
  * Class Created by Collin Castro supported by Kristian Wright
  */
-package Model.Model;
+package Model;
 
 import java.util.ArrayList;
 import java.util.List;
