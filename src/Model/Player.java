@@ -14,7 +14,7 @@ public class Player {
     private Dice dice;
     private GameBoard gameBoard;
 
-    public Player(String name, String token, GameBoard gameBoard) {
+    public Player(String name, String token, GameBoard gameBoard, List<Player> players) {
         this.name = name;
         this.token = token;
         this.money = 1500;
@@ -66,14 +66,6 @@ public class Player {
 
     public void setMoney(int money) {
         this.money = money;
-    }
-
-    public void increaseMoney(int amount) {
-        money += amount;
-    }
-
-    public void decreaseMoney(int amount) {
-        money -= amount;
     }
 
     public boolean isInJail() {

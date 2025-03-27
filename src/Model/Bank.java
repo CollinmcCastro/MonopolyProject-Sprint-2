@@ -58,7 +58,12 @@ public class Bank {
      * @param amount The amount of money to give.
      */
     public void payPlayer(Player player, int amount) {
-        player.increaseMoney(amount);
+        if (amount <= 0) {
+            System.out.println("Invalid payment amount.");
+            return;
+        }
+
+        player.setMoney(player.getMoney() + amount);
         System.out.println("Bank pays " + player.getName() + " $" + amount);
     }
 
@@ -69,9 +74,20 @@ public class Bank {
      * @param amount The amount of money to collect.
      */
     public void collectFromPlayer(Player player, int amount) {
-        player.decreaseMoney(amount);
+        if (amount <= 0) {
+            System.out.println("Invalid collection amount.");
+            return;
+        }
+
+        if (player.getMoney() < amount) {
+            System.out.println(player.getName() + " doesn't have enough money to pay $" + amount);
+            return;
+        }
+
+        player.setMoney(player.getMoney() - amount);
         System.out.println("Bank collects $" + amount + " from " + player.getName());
     }
+
 
     /**
      * Sells a property to a player at face value (assuming it is unowned).
