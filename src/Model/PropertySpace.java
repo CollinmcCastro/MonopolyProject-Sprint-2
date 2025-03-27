@@ -12,9 +12,6 @@ public class PropertySpace extends Space {
     private final int mortgageValue;
     private final int costOfHouseHotel;
     private Player owner;
-    private Bank bank;
-
-    public void setBank(Bank bank) { this.bank = bank; }
 
     public PropertySpace(String name, int location, String color, int price, int propertySite, int propertySiteWithColorSet,
                          int costWithOneHouse, int costWithTwoHouses, int costWithThreeHouses, int costWithFourHouses,
@@ -39,8 +36,8 @@ public class PropertySpace extends Space {
             System.out.println(player.getName() + " landed on " + name + " which is unowned.");
         } else if (owner != player) {
             int rent = calculateRent();
-            bank.collectFromPlayer(player, rent);
-            bank.payPlayer(owner, rent);
+            player.decreaseMoney(rent);
+            owner.increaseMoney(rent);
             System.out.println(player.getName() + " landed on " + name + " and paid $" + rent + " rent to " + owner.getName());
         } else {
             System.out.println(player.getName() + " landed on their own property " + name + ".");
@@ -55,7 +52,7 @@ public class PropertySpace extends Space {
     public void buy(Player player) {
         if (owner == null) {
             owner = player;
-            bank.collectFromPlayer(player, price);
+            player.decreaseMoney(price);
             System.out.println(player.getName() + " bought " + name + " for $" + price);
         }
     }

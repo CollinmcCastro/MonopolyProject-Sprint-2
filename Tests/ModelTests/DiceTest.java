@@ -1,6 +1,3 @@
-/**
- * Tests Created by Kristian Wright
- */
 package ModelTests;
 
 import Model.Dice;
@@ -9,7 +6,6 @@ import Model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,7 +38,6 @@ public class DiceTest {
         ArrayList<Integer> results = dice.rollDice();
         player.move(results.get(0) + results.get(1));
         int finalPosition = player.getPosition();
-        int totalDistanceMoved = (finalPosition - initialPosition + 40) % 40; // Handle board wrap-around
 
         // Check if the player passed Go and collected $200
         if (finalPosition < initialPosition && !player.isInJail()) {
@@ -57,5 +52,78 @@ public class DiceTest {
             int result2 = results.get(1);
             assertTrue(result1 + result2 >= 2 && result1 + result2 <= 12, "Player should move between 2 and 12 spaces after rolling dice.");
         }
+    }
+
+    /**
+     * Tests that doubles rolled are counted correctly.
+     */
+    @Test
+    public void testDoublesRolled() {
+        dice.rollDice();
+        int initialDoubles = dice.getDoublesRolled();
+        ArrayList<Integer> results = dice.rollDice();
+        int doublesCount = 0;
+        for (int i = 0; i < results.size(); i += 2) {
+            if (results.get(i).equals(results.get(i + 1))) {
+                doublesCount++;
+            }
+        }
+        assertEquals(initialDoubles + doublesCount, dice.getDoublesRolled(), "Doubles rolled count should increment correctly.");
+    }
+
+    /**
+     * Tests that the doubles rolled count is reset correctly.
+     */
+    @Test
+    public void testResetDoublesRolled() {
+        dice.rollDice();
+        dice.resetDoublesRolled();
+        assertEquals(0, dice.getDoublesRolled(), "Doubles rolled count should be reset to 0.");
+    }
+
+    /**
+     * Tests that the dice roll results are within the valid range (1 to 6).
+     */
+    @Test
+    public void testValidDiceRollRange() {
+        ArrayList<Integer> results = dice.rollDice();
+        for (int result : results) {
+            assertTrue(result >= 1 && result <= 6, "Dice roll result should be between 1 and 6.");
+        }
+    }
+
+    /**
+     * Tests that the doubles rolled count does not increment when no doubles are rolled.
+     */
+    @Test
+    public void testNoDoublesRolled() {
+        ArrayList<Integer> results;
+        do {
+            results = dice.rollDice();
+        } while (results.get(0).equals(results.get(1))); // Ensure no doubles are rolled initially
+
+        int initialDoubles = dice.getDoublesRolled();
+        results = dice.rollDice();
+        while (results.get(0).equals(results.get(1))) { // Ensure no doubles are rolled
+            results = dice.rollDice();
+        }
+        assertEquals(initialDoubles, dice.getDoublesRolled(), "Doubles rolled count should not increment when no doubles are rolled.");
+    }
+
+    /**
+     * Tests that the doubles rolled count accumulates correctly over multiple rolls.
+     */
+    @Test
+    public void testMultipleRolls() {
+        int totalDoubles = 0;
+        for (int i = 0; i < 10; i++) {
+            ArrayList<Integer> results = dice.rollDice();
+            for (int j = 0; j < results.size(); j += 2) {
+                if (results.get(j).equals(results.get(j + 1))) {
+                    totalDoubles++;
+                }
+            }
+        }
+        assertEquals(totalDoubles, dice.getDoublesRolled(), "Doubles rolled count should accumulate correctly over multiple rolls.");
     }
 }

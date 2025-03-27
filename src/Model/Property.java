@@ -17,11 +17,7 @@ public class Property extends Space {
     private boolean mortgaged;
     private final int houseCount;
     private final boolean hasHotel;
-    private Bank bank;
 
-    public void setBank(Bank bank) {
-        this.bank = bank;
-    }
     /**
      * Constructs a Property with the given name, price, and color group.
      *
@@ -59,7 +55,7 @@ public class Property extends Space {
     public void buy(Player player) {
         if (this.owner == null) {
             this.owner = player;
-            bank.collectFromPlayer(player, this.price);
+            player.decreaseMoney(this.price);
             player.addProperty(this); // Ensure Player class has this method
             System.out.println(player.getName() + " bought " + this.name);
         } else {
@@ -75,8 +71,8 @@ public class Property extends Space {
     public void payRent(Player player) {
         if (this.owner != null && this.owner != player && !this.mortgaged) {
             int rentAmount = calculateRent();
-            bank.collectFromPlayer(player, rentAmount);
-            bank.payPlayer(this.owner, rentAmount);
+            player.decreaseMoney(rentAmount);
+            this.owner.increaseMoney(rentAmount);
             System.out.println(player.getName() + " paid $" + rentAmount + " rent to " + this.owner.getName());
         }
     }
@@ -98,7 +94,7 @@ public class Property extends Space {
     public void mortgage() {
         if (!mortgaged) {
             mortgaged = true;
-            bank.payPlayer(owner, price / 2);
+            owner.increaseMoney(price / 2);
             System.out.println(owner.getName() + " mortgaged " + this.name);
         }
     }
@@ -109,7 +105,7 @@ public class Property extends Space {
     public void unmortgage() {
         if (mortgaged) {
             mortgaged = false;
-            bank.collectFromPlayer(owner, (int) (price * 0.55)); // 10% interest
+            owner.decreaseMoney((int) (price * 0.55)); // 10% interest
             System.out.println(owner.getName() + " unmortgaged " + this.name);
         }
     }
@@ -224,8 +220,8 @@ public class Property extends Space {
             System.out.println(player.getName() + " landed on " + name + " which is unowned.");
         } else if (owner != player) {
             int rent = calculateRent();
-            bank.collectFromPlayer(player, rent);
-            bank.payPlayer(owner, rent);
+            player.decreaseMoney(rent);
+            owner.increaseMoney(rent);
             System.out.println(player.getName() + " landed on " + name + " and paid $" + rent + " rent to " + owner.getName());
         } else {
             System.out.println(player.getName() + " landed on their own property " + name + ".");

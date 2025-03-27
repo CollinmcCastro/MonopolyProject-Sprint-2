@@ -14,7 +14,7 @@ public class Player {
     private Dice dice;
     private GameBoard gameBoard;
 
-    public Player(String name, String token, GameBoard gameBoard, List<Player> players) {
+    public Player(String name, String token, GameBoard gameBoard) {
         this.name = name;
         this.token = token;
         this.money = 1500;
@@ -68,6 +68,14 @@ public class Player {
         this.money = money;
     }
 
+    public void increaseMoney(int amount) {
+        money += amount;
+    }
+
+    public void decreaseMoney(int amount) {
+        money -= amount;
+    }
+
     public boolean isInJail() {
         return inJail;
     }
@@ -82,6 +90,10 @@ public class Player {
 
     public GameBoard getGameBoard() {
         return gameBoard;
+    }
+
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     public void addProperty(Property property) {

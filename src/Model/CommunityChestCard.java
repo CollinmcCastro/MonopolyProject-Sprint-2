@@ -1,6 +1,3 @@
-/**
- * Class Created by Kristian Wright
- */
 package Model;
 
 import java.util.function.Consumer;
@@ -10,9 +7,9 @@ import java.util.function.Consumer;
  * Each Community Chest card has a description and an effect that is applied to a player.
  */
 public class CommunityChestCard {
-    public static Consumer<Player> assessStreetRepairs;
     final private String description;
     final private Consumer<Player> effect;
+    private GameBoard gameBoard;
 
     /**
      * Constructs a CommunityChestCard with the given description and effect.
@@ -23,6 +20,15 @@ public class CommunityChestCard {
     public CommunityChestCard(String description, Consumer<Player> effect) {
         this.description = description;
         this.effect = effect;
+    }
+
+    /**
+     * Sets the game board for the Community Chest card.
+     *
+     * @param gameBoard The game board to set.
+     */
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     /**
@@ -47,8 +53,12 @@ public class CommunityChestCard {
 
     /**
      * Collects a specified amount from each player.
+     *
+     * @param amount The amount to collect from each player.
      */
-    public static void collectFromEachPlayer() {
-        // Logic to collect a specified amount from each player
+    public void collectFromEachPlayer(int amount) {
+        for (Player player : gameBoard.getPlayers()) {
+            player.decreaseMoney(amount);
+        }
     }
 }

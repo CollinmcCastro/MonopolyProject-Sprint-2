@@ -11,7 +11,7 @@ public class GameBoard {
     private final Stack<ChanceCard> chanceDeck; // Chance card deck
     private final Stack<CommunityChestCard> communityDeck; // Community Chest card deck
     private final List<Player> players; // Players in the game
-    private  Bank bank;
+
     /**
      * Constructs a GameBoard with the given list of players.
      * Initializes the board spaces and card decks.
@@ -84,43 +84,49 @@ public class GameBoard {
      */
     private void initializeChanceCards() {
         chanceDeck.add(new ChanceCard("Advance to Boardwalk.", player -> player.setPosition(39)));
-        chanceDeck.add(new ChanceCard("Advance to Go (Collect $200).", player -> {player.setPosition(0); bank.payPlayer(player,200);}));
-        chanceDeck.add(new ChanceCard("Advance to Illinois Avenue. If you pass Go, collect $200.", player -> {if (player.getPosition() > 24) {bank.payPlayer(player,200);} player.setPosition(24);}));
-        chanceDeck.add(new ChanceCard("Advance to St. Charles Place. If you pass Go, collect $200.", player -> {if (player.getPosition() > 11) {bank.payPlayer(player, 200);} player.setPosition(11);}));
+        chanceDeck.add(new ChanceCard("Advance to Go (Collect $200).", player -> {player.setPosition(0); player.increaseMoney(200);}));
+        chanceDeck.add(new ChanceCard("Advance to Illinois Avenue. If you pass Go, collect $200.", player -> {if (player.getPosition() > 24) {player.increaseMoney(200);} player.setPosition(24);}));
+        chanceDeck.add(new ChanceCard("Advance to St. Charles Place. If you pass Go, collect $200.", player -> {if (player.getPosition() > 11) {player.increaseMoney(200);} player.setPosition(11);}));
         chanceDeck.add(new ChanceCard("Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay owner twice the rental to which they are otherwise entitled.", _ -> ChanceCard.moveToNearestRailroad()));
         chanceDeck.add(new ChanceCard("Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay owner twice the rental to which they are otherwise entitled.", _ -> ChanceCard.moveToNearestRailroad()));
         chanceDeck.add(new ChanceCard("Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown.", _ -> ChanceCard.moveToNearestUtility()));
-        chanceDeck.add(new ChanceCard("Bank pays you dividend of $50.", player -> bank.payPlayer(player, 50)));
+        chanceDeck.add(new ChanceCard("Bank pays you dividend of $50.", player -> player.increaseMoney(50)));
         chanceDeck.add(new ChanceCard("Get Out of Jail Free.", Player::receiveGetOutOfJailFreeCard));
         chanceDeck.add(new ChanceCard("Go Back 3 Spaces.", player -> player.move(-3)));
         chanceDeck.add(new ChanceCard("Go to Jail. Go directly to Jail, do not pass Go, do not collect $200.", Player::goToJail));
         chanceDeck.add(new ChanceCard("Make general repairs on all your property. For each house pay $25. For each hotel pay $100.", _ -> ChanceCard.makeGeneralRepairs()));
-        chanceDeck.add(new ChanceCard("Speeding fine $15.", player -> bank.collectFromPlayer(player,15)));
-        chanceDeck.add(new ChanceCard("Take a trip to Reading Railroad. If you pass Go, collect $200.", player -> {if (player.getPosition() > 5) {bank.payPlayer(player,200);} player.setPosition(5);}));
+        chanceDeck.add(new ChanceCard("Speeding fine $15.", player -> player.decreaseMoney(15)));
+        chanceDeck.add(new ChanceCard("Take a trip to Reading Railroad. If you pass Go, collect $200.", player -> {if (player.getPosition() > 5) {player.increaseMoney(200);} player.setPosition(5);}));
         chanceDeck.add(new ChanceCard("You have been elected Chairman of the Board. Pay each player $50.", _ -> ChanceCard.payEachPlayer()));
-        chanceDeck.add(new ChanceCard("Your building loan matures. Collect $150.", player -> bank.payPlayer(player, 150)));
+        chanceDeck.add(new ChanceCard("Your building loan matures. Collect $150.", player -> player.increaseMoney(150)));
     }
 
     /**
      * Initializes the Community Chest cards.
      */
     private void initializeCommunityChestCards() {
-        communityDeck.add(new CommunityChestCard("Advance to Go (Collect $200).", player -> {player.setPosition(0); bank.payPlayer(player,200);}));
-        communityDeck.add(new CommunityChestCard("Bank error in your favor. Collect $200.", player -> bank.payPlayer(player,200)));
-        communityDeck.add(new CommunityChestCard("Doctor’s fee. Pay $50.", player -> bank.collectFromPlayer(player,50)));
-        communityDeck.add(new CommunityChestCard("From sale of stock you get $50.", player -> bank.payPlayer(player,50)));
+        communityDeck.add(new CommunityChestCard("Advance to Go (Collect $200).", player -> {player.setPosition(0); player.increaseMoney(200);}));
+        communityDeck.add(new CommunityChestCard("Bank error in your favor. Collect $200.", player -> player.increaseMoney(200)));
+        communityDeck.add(new CommunityChestCard("Doctor’s fee. Pay $50.", player -> player.decreaseMoney(50)));
+        communityDeck.add(new CommunityChestCard("From sale of stock you get $50.", player -> player.increaseMoney(50)));
         communityDeck.add(new CommunityChestCard("Get Out of Jail Free.", Player::receiveGetOutOfJailFreeCard));
         communityDeck.add(new CommunityChestCard("Go to Jail. Go directly to jail, do not pass Go, do not collect $200.", Player::goToJail));
-        communityDeck.add(new CommunityChestCard("Holiday fund matures. Receive $100.", player -> bank.payPlayer(player,100)));
-        communityDeck.add(new CommunityChestCard("Income tax refund. Collect $20.", player -> bank.payPlayer(player,20)));
-        communityDeck.add(new CommunityChestCard("It is your birthday. Collect $10 from every player.", _ -> CommunityChestCard.collectFromEachPlayer()));
-        communityDeck.add(new CommunityChestCard("Life insurance matures. Collect $100.", player -> bank.payPlayer(player,100)));
-        communityDeck.add(new CommunityChestCard("Pay hospital fees of $100.", player -> bank.collectFromPlayer(player,100)));
-        communityDeck.add(new CommunityChestCard("Pay school fees of $50.", player -> bank.collectFromPlayer(player, 50)));
-        communityDeck.add(new CommunityChestCard("Receive $25 consultancy fee.", player -> bank.payPlayer(player,25)));
-        communityDeck.add(new CommunityChestCard("You are assessed for street repair. $40 per house. $115 per hotel.", CommunityChestCard.assessStreetRepairs));
-        communityDeck.add(new CommunityChestCard("You have won second prize in a beauty contest. Collect $10.", player -> bank.payPlayer(player,10)));
-        communityDeck.add(new CommunityChestCard("You inherit $100.", player -> bank.payPlayer(player,100)));
+        communityDeck.add(new CommunityChestCard("Holiday fund matures. Receive $100.", player -> player.increaseMoney(100)));
+        communityDeck.add(new CommunityChestCard("Income tax refund. Collect $20.", player -> player.increaseMoney(20)));
+        communityDeck.add(new CommunityChestCard("It is your birthday. Collect $10 from every player.", player -> {
+            CommunityChestCard card = new CommunityChestCard("", null);
+            card.setGameBoard(this);
+            card.collectFromEachPlayer(10);
+        }));
+        communityDeck.add(new CommunityChestCard("Life insurance matures. Collect $100.", player -> player.increaseMoney(100)));
+        communityDeck.add(new CommunityChestCard("Pay hospital fees of $100.", player -> player.decreaseMoney(100)));
+        communityDeck.add(new CommunityChestCard("Pay school fees of $50.", player -> player.decreaseMoney(50)));
+        communityDeck.add(new CommunityChestCard("Receive $25 consultancy fee.", player -> player.increaseMoney(25)));
+        communityDeck.add(new CommunityChestCard("You are assessed for street repair. $40 per house. $115 per hotel.", player -> {
+            // Implement the assessStreetRepairs logic here
+        }));
+        communityDeck.add(new CommunityChestCard("You have won second prize in a beauty contest. Collect $10.", player -> player.increaseMoney(10)));
+        communityDeck.add(new CommunityChestCard("You inherit $100.", player -> player.increaseMoney(100)));
     }
 
     /**
@@ -189,6 +195,10 @@ public class GameBoard {
     public void movePlayer(Player player, int steps) {
         int oldPosition = player.getPosition();
         int newPosition = (oldPosition + steps) % spaces.size();
+        if (oldPosition > newPosition) {
+            player.increaseMoney(200);
+            System.out.println(player.getName() + " passed Go and collected $200!");
+        }
         player.setPosition(newPosition);
         System.out.println(player.getName() + " moved to " + spaces.get(newPosition).getName());
         spaces.get(newPosition).landOn(player);
@@ -233,9 +243,5 @@ public class GameBoard {
 
     public List<Player> getPlayers() {
         return players;
-    }
-
-    public void SetBank(Bank bank) {
-        this.bank = bank;
     }
 }

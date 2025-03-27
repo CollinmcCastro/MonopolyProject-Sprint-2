@@ -2,9 +2,7 @@ package Model;
 
 public class TaxSpace extends Space {
     private final int taxAmount;
-    private Bank bank;
 
-    public void setBank(Bank bank) { this.bank = bank; }
     public TaxSpace(String name, int location, int taxAmount) {
         super(name);
         this.taxAmount = taxAmount;
@@ -12,7 +10,7 @@ public class TaxSpace extends Space {
 
     @Override
     public void landOn(Player player) {
-        bank.collectFromPlayer(player, taxAmount);
+        player.decreaseMoney(taxAmount);
         System.out.println(player.getName() + " landed on " + name + " and paid $" + taxAmount + ".");
     }
 
