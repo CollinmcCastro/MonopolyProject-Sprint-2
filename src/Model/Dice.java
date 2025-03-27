@@ -1,69 +1,41 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * Represents a pair of dice used in the game.
  */
 public class Dice {
-    private int result1;
-    private int result2;
     private int doublesRolled;
 
-    public Dice() {
-        result1 = 0;
-        result2 = 0;
+    public Dice(){
         doublesRolled = 0;
     }
 
     /**
-     * Rolls the dice for the specified player.
-     *
-     * @param player The player rolling the dice.
+     * Rolls the dice.
+     * @return the results of the dice roll.
      */
-    public void rollDice(Player player) {
+    public ArrayList<Integer> rollDice() {
         Random r = new Random();
-        result1 = r.nextInt(1, 7);
-        result2 = r.nextInt(1, 7);
+        ArrayList<Integer> results = new ArrayList<>();
+        int result1 = r.nextInt(1, 7);
+        int result2 = r.nextInt(1, 7);
         System.out.println("Rolled: " + result1 + " and " + result2); // Print dice roll
-
-        if (result1 == result2) {
+        if (result1 == result2){
             doublesRolled += 1;
-            System.out.println(player.getToken() + " rolled doubles and gets another turn!");
-            if (doublesRolled < 3) {
-                player.move(result1 + result2);
-                rollDice(player); // Recurse if doubles rolled
-            } else {
-                player.goToJail(); // Send to jail after 3 doubles
-            }
-        } else {
-            doublesRolled = 0;
-            player.move(result1 + result2); // Move player
         }
+        results.add(result1);
+        results.add(result2);
+        return results;
     }
 
-    /**
-     * Rolls the dice to determine if the player can get out of jail.
-     *
-     * @return True if the player rolls doubles, false otherwise.
-     */
-    public boolean rollJail() {
-        Random r = new Random();
-        result1 = r.nextInt(1, 7);
-        result2 = r.nextInt(1, 7);
-        return result1 == result2;
+    public int getDoublesRolled() {
+        return doublesRolled;
     }
 
-    // Getter for total dice roll
-    public int getTotal() {
-        return result1 + result2;
-    }
-
-    public int getResult1() {
-        return result1;
-    }
-
-    public int getResult2() {
-        return result2;
+    public void resetDoublesRolled() {
+        doublesRolled = 0;
     }
 }

@@ -3,12 +3,14 @@
  */
 package ModelTests;
 
-import Model.Model.*;
+import Model.Dice;
+import Model.GameBoard;
+import Model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-import java.util.List;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -17,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DiceTest {
     private Dice dice;
     private Player player;
-    private List<Player> players;
 
     /**
      * Sets up the test environment before each test.
@@ -27,7 +28,7 @@ public class DiceTest {
     public void setUp() {
         dice = new Dice();
         GameBoard gameBoard = new GameBoard(new ArrayList<>());
-        player = new Player("TestPlayer", "Car", gameBoard, players);
+        player = new Player("TestPlayer", "Car", gameBoard);
     }
 
     /**
@@ -38,7 +39,8 @@ public class DiceTest {
     public void testRollDice() {
         int initialPosition = player.getPosition();
         int initialMoney = player.getMoney();
-        dice.rollDice(player);
+        ArrayList<Integer> results = dice.rollDice();
+        player.move(results.get(0) + results.get(1));
         int finalPosition = player.getPosition();
         int totalDistanceMoved = (finalPosition - initialPosition + 40) % 40; // Handle board wrap-around
 
@@ -51,37 +53,9 @@ public class DiceTest {
         if (player.isInJail()) {
             assertEquals(10, player.getPosition(), "Player should be in jail at position 10.");
         } else {
-            int result1 = dice.getResult1();
-            int result2 = dice.getResult2();
+            int result1 = results.get(0);
+            int result2 = results.get(1);
             assertTrue(result1 + result2 >= 2 && result1 + result2 <= 12, "Player should move between 2 and 12 spaces after rolling dice.");
         }
-    }
-
-    /**
-     * Tests the rollJail method of the Dice class.
-     * Verifies that the method returns a boolean value.
-     */
-    @Test
-    public void testRollJail() {
-        boolean result = dice.rollJail();
-        assertTrue(result == true || result == false, "rollJail should return a boolean value.");
-    }
-
-    /**
-     * Tests the rollDice method for rolling doubles.
-     * Verifies that the player goes to jail after rolling doubles three times.
-     */
-    @Test
-    public void testRollDiceDoubles() {
-        int doublesRolled = 0;
-        while (doublesRolled < 3) {
-            dice.rollDice(player);
-            if (dice.getResult1() == dice.getResult2()) {
-                doublesRolled++;
-            } else {
-                doublesRolled = 0;
-            }
-        }
-        assertTrue(player.isInJail(), "Player should be in jail after rolling doubles three times.");
     }
 }

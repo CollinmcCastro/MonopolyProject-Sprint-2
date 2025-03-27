@@ -3,12 +3,10 @@
  */
 package ModelTests;
 
-import Model.Model.*;
+import Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -26,8 +24,7 @@ public class SpaceTest {
     @BeforeEach
     public void setUp() {
         GameBoard gameBoard = new GameBoard(new ArrayList<>());
-        List<Player> players = new ArrayList<>();
-        player = new Player("Test Player", "Token", gameBoard, players);
+        player = new Player("Test Player", "Token", gameBoard);
     }
 
     /**
@@ -36,11 +33,11 @@ public class SpaceTest {
      */
     @Test
     public void testSpaceConstructorWithValidName() {
-        space = new Space.PropertySpace("Boardwalk", 39, "Blue", 400, 50,
+        space = new PropertySpace("Boardwalk", 39, "Blue", 400, 50,
                 100, 200, 600, 1400, 1700,
                 2000, 200, 200);
         assertEquals("Boardwalk", space.getName());
-        space = new Space.UtilitySpace("Electric Company", 12, 150, 75);
+        space = new UtilitySpace("Electric Company", 12, 150, 75);
         assertEquals("Electric Company", space.getName());
     }
 
@@ -50,7 +47,7 @@ public class SpaceTest {
      */
     @Test
     public void testSpaceConstructorWithEmptyString() {
-        space = new Space.GoSpace();
+        space = new GoSpace();
         assertEquals("Go", space.getName());
     }
 
@@ -60,7 +57,7 @@ public class SpaceTest {
      */
     @Test
     public void testSpaceConstructorWithNullName() {
-        space = new Space.GoSpace();
+        space = new GoSpace();
         assertNotNull(space.getName());
     }
 
@@ -70,7 +67,7 @@ public class SpaceTest {
      */
     @Test
     public void testGoSpaceLandOn() {
-        space = new Space.GoSpace();
+        space = new GoSpace();
         int initialMoney = player.getMoney();
         space.landOn(player);
         assertEquals(initialMoney + 200, player.getMoney());
@@ -82,7 +79,7 @@ public class SpaceTest {
      */
     @Test
     public void testCommunityChestSpaceLandOn() {
-        space = new Space.CommunityChestSpace();
+        space = new CommunityChestSpace();
         space.landOn(player);
         // Add assertions based on the expected behavior of drawing a Community Chest card
     }
@@ -93,7 +90,7 @@ public class SpaceTest {
      */
     @Test
     public void testIncomeTaxSpaceLandOn() {
-        space = new Space.IncomeTaxSpace();
+        space = new IncomeTaxSpace();
         int initialMoney = player.getMoney();
         space.landOn(player);
         assertEquals(initialMoney - 200, player.getMoney());
@@ -105,7 +102,7 @@ public class SpaceTest {
      */
     @Test
     public void testRailroadSpaceLandOn() {
-        space = new Space.RailroadSpace("Reading Railroad", 5, 200, 25, 50, 100, 200, 100);
+        space = new RailroadSpace("Reading Railroad", 5, 200, 25, 50, 100, 200, 100);
         space.landOn(player);
         // Add assertions based on the expected behavior of landing on a Railroad space
     }
@@ -116,7 +113,7 @@ public class SpaceTest {
      */
     @Test
     public void testChanceSpaceLandOn() {
-        space = new Space.ChanceSpace();
+        space = new ChanceSpace();
         space.landOn(player);
         // Add assertions based on the expected behavior of drawing a Chance card
     }
@@ -127,7 +124,7 @@ public class SpaceTest {
      */
     @Test
     public void testJailSpaceLandOn() {
-        space = new Space.JailSpace();
+        space = new JailSpace();
         space.landOn(player);
         // Add assertions based on the expected behavior of landing on Jail space
     }
@@ -138,7 +135,7 @@ public class SpaceTest {
      */
     @Test
     public void testUtilitySpaceLandOn() {
-        space = new Space.UtilitySpace("Electric Company", 12, 150, 75);
+        space = new UtilitySpace("Electric Company", 12, 150, 75);
         space.landOn(player);
         // Add assertions based on the expected behavior of landing on a Utility space
     }
@@ -149,7 +146,7 @@ public class SpaceTest {
      */
     @Test
     public void testPropertySpaceLandOn() {
-        space = new Space.PropertySpace("Boardwalk", 39, "Blue", 400, 50,
+        space = new PropertySpace("Boardwalk", 39, "Blue", 400, 50,
                 100, 200, 600, 1400, 1700,
                 2000, 200, 200);
         space.landOn(player);
@@ -162,7 +159,7 @@ public class SpaceTest {
      */
     @Test
     public void testFreeParkingSpaceLandOn() {
-        space = new Space.FreeParkingSpace();
+        space = new FreeParkingSpace();
         space.landOn(player);
         // Add assertions based on the expected behavior of landing on Free Parking space
     }
@@ -173,7 +170,7 @@ public class SpaceTest {
      */
     @Test
     public void testGoToJailSpaceLandOn() {
-        space = new Space.GoToJailSpace();
+        space = new GoToJailSpace();
         space.landOn(player);
         assertTrue(player.isInJail());
     }
@@ -184,7 +181,7 @@ public class SpaceTest {
      */
     @Test
     public void testLuxuryTaxSpaceLandOn() {
-        space = new Space.LuxuryTaxSpace();
+        space = new LuxuryTaxSpace();
         int initialMoney = player.getMoney();
         space.landOn(player);
         assertEquals(initialMoney - 75, player.getMoney());
@@ -196,7 +193,7 @@ public class SpaceTest {
      */
     @Test
     public void testTaxSpaceLandOn() {
-        space = new Space.TaxSpace("Income Tax", 4, 200);
+        space = new TaxSpace("Income Tax", 4, 200);
         int initialMoney = player.getMoney();
         space.landOn(player);
         assertEquals(initialMoney - 200, player.getMoney());
