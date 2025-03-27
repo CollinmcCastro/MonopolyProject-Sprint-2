@@ -234,4 +234,8 @@ public class GameBoard {
     public List<Space> getSpaces() {
         return spaces;
     }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
 }

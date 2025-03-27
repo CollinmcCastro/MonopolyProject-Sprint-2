@@ -1,6 +1,7 @@
-package Model.View;
+package View;
 
-import Model.Model.*;
+import Model.GameBoard;
+import Model.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -22,20 +23,20 @@ public class MonopolyView {
             Space space = spaces.get(i);
             System.out.println(i + ": " + space.getName());
             switch (space) {
-                case Space.PropertySpace property -> {
+                case PropertySpace property -> {
                     System.out.println("  Price: $" + property.getPrice());
                     System.out.println("  Rent: $" + property.calculateRent());
                     System.out.println("  Owner: " + (property.isOwned() ? property.getOwner().getName() : "None"));
                 }
-                case Space.RailroadSpace railroad -> {
+                case RailroadSpace railroad -> {
                     System.out.println("  Price: $" + railroad.getPrice());
                     System.out.println("  Owner: " + (railroad.isOwned() ? railroad.getOwner().getName() : "None"));
                 }
-                case Space.UtilitySpace utility -> {
+                case UtilitySpace utility -> {
                     System.out.println("  Price: $" + utility.getPrice());
                     System.out.println("  Owner: " + (utility.isOwned() ? utility.getOwner().getName() : "None"));
                 }
-                case Space.TaxSpace tax -> System.out.println("  Tax Amount: $" + tax.getTaxAmount());
+                case TaxSpace tax -> System.out.println("  Tax Amount: $" + tax.getTaxAmount());
                 default -> {
                 }
             }
@@ -63,7 +64,7 @@ public class MonopolyView {
 
     public void displayDiceRoll(Player player) {
         int startPosition = player.getPosition();
-        player.rollDice(); // Player rolls dice
+        Dice.rollDice(); // Player rolls dice
         int endPosition = player.getPosition();
         Space startSpace = gameBoard.getSpace(startPosition);
         Space endSpace = gameBoard.getSpace(endPosition);
@@ -73,28 +74,28 @@ public class MonopolyView {
         System.out.println(player.getToken() + " moved " + distanceMoved + " spaces to " + endSpace.getName() + " (Position: " + endPosition + ").");
 
         switch (endSpace) {
-            case Space.PropertySpace property -> {
+            case PropertySpace property -> {
                 System.out.println("  Price: $" + property.getPrice());
                 System.out.println("  Rent: $" + property.calculateRent());
                 System.out.println("  Owner: " + (property.isOwned() ? property.getOwner().getName() : "None"));
             }
-            case Space.RailroadSpace railroad -> {
+            case RailroadSpace railroad -> {
                 System.out.println("  Price: $" + railroad.getPrice());
                 System.out.println("  Owner: " + (railroad.isOwned() ? railroad.getOwner().getName() : "None"));
             }
-            case Space.UtilitySpace utility -> {
+            case UtilitySpace utility -> {
                 System.out.println("  Price: $" + utility.getPrice());
                 System.out.println("  Owner: " + (utility.isOwned() ? utility.getOwner().getName() : "None"));
             }
-            case Space.TaxSpace tax -> System.out.println("  Tax Amount: $" + tax.getTaxAmount());
-            case Space.ChanceSpace space -> {
+            case TaxSpace tax -> System.out.println("  Tax Amount: $" + tax.getTaxAmount());
+            case ChanceSpace space -> {
                 ChanceCard card = gameBoard.getChanceDeck().pop();
                 System.out.println(player.getName() + " drew a Chance card: " + card.getDescription());
                 card.apply(player);
                 gameBoard.getChanceDeck().push(card); // Optionally, put the card back at the bottom of the deck
 
             }
-            case Space.CommunityChestSpace space -> {
+            case CommunityChestSpace space -> {
                 CommunityChestCard card = gameBoard.getCommunityDeck().pop();
                 System.out.println(player.getName() + " drew a Community Chest card: " + card.getDescription());
                 card.apply(player);
@@ -116,9 +117,9 @@ public class MonopolyView {
         GameBoard board = new GameBoard(new ArrayList<>());
         String token = playerSelectToken();
         System.out.println(token);
-        Player player1 = new Player("Player 1", token, board, new ArrayList<>());
+        Player player1 = new Player("Player 1", token, board);
         token = playerSelectToken();
-        Player player2 = new Player("Player 2", token, board, new ArrayList<>());
+        Player player2 = new Player("Player 2", token, board);
        // Player topHat = new Player("Player 1", "Top Hat", board);
         // Player battleship = new Player("Player 2", "Battleship", board);
 
