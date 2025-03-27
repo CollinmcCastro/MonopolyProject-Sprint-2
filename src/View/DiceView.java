@@ -1,3 +1,6 @@
+/**
+ * Class Created by Kristian Wright
+ */
 package View;
 
 import Model.Dice;

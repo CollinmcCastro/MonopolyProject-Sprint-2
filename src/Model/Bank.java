@@ -37,7 +37,7 @@ public class Bank {
         this.unownedProperties = new ArrayList<>();
 
         for (Property p : allProperties) {
-            if (!p.isOwned()) {
+            if (p.isOwned()) {
                 unownedProperties.add(p);
             }
         }
@@ -80,7 +80,7 @@ public class Bank {
      * @param buyer The player buying the property.
      */
     public void sellProperty(Property property, Player buyer) {
-        if (!property.isOwned()) {
+        if (property.isOwned()) {
             if (buyer.getMoney() >= property.getPrice()) {
                 property.buy(buyer);
                 unownedProperties.remove(property);

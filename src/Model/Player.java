@@ -100,6 +100,10 @@ public class Player {
         properties.add(property);
     }
 
+    public List<Property> getProperties() {
+        return properties;
+    }
+
     public Dice getDice() {
         return dice;
     }

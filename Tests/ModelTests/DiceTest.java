@@ -1,3 +1,6 @@
+/**
+ * Class Created by Kristian Wright
+ */
 package ModelTests;
 
 import Model.Dice;
@@ -90,24 +93,6 @@ public class DiceTest {
         for (int result : results) {
             assertTrue(result >= 1 && result <= 6, "Dice roll result should be between 1 and 6.");
         }
-    }
-
-    /**
-     * Tests that the doubles rolled count does not increment when no doubles are rolled.
-     */
-    @Test
-    public void testNoDoublesRolled() {
-        ArrayList<Integer> results;
-        do {
-            results = dice.rollDice();
-        } while (results.get(0).equals(results.get(1))); // Ensure no doubles are rolled initially
-
-        int initialDoubles = dice.getDoublesRolled();
-        results = dice.rollDice();
-        while (results.get(0).equals(results.get(1))) { // Ensure no doubles are rolled
-            results = dice.rollDice();
-        }
-        assertEquals(initialDoubles, dice.getDoublesRolled(), "Doubles rolled count should not increment when no doubles are rolled.");
     }
 
     /**

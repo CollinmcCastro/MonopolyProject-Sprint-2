@@ -1,8 +1,4 @@
-/**
- * Class Created by Kristian Wright
- */
 package Model;
-
 
 /**
  * Represents a property in the Monopoly game.
@@ -116,7 +112,7 @@ public class Property extends Space {
      * @return True if the property is owned, false otherwise.
      */
     public boolean isOwned() {
-        return owner != null;
+        return owner == null;
     }
 
     /**
@@ -226,5 +222,23 @@ public class Property extends Space {
         } else {
             System.out.println(player.getName() + " landed on their own property " + name + ".");
         }
+    }
+
+    /**
+     * Checks if the property has a hotel.
+     *
+     * @return True if the property has a hotel, false otherwise.
+     */
+    public boolean hasHotel() {
+        return hasHotel;
+    }
+
+    /**
+     * Gets the number of houses on the property.
+     *
+     * @return The number of houses on the property.
+     */
+    public int getHouseCount() {
+        return houseCount;
     }
 }

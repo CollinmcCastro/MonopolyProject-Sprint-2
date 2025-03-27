@@ -2,7 +2,7 @@ package Model;
 
 public class UtilitySpace extends Space {
     private final int price;
-    private Player owner;
+    private final Player owner;
 
     public UtilitySpace(String name, int location, int price, int mortgageValue) {
         super(name);

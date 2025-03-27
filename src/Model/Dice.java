@@ -1,3 +1,6 @@
+/**
+ * Class Created by Finn Dempsey and Refactored by Kristian Wright
+ */
 package Model;
 
 import java.util.ArrayList;
